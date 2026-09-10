@@ -476,7 +476,7 @@ class Device:
         if not self.online:
             return False
         now = time.monotonic()
-        if (now - getattr(self, "_last_apply_time", 0.0)) < debounce_seconds:
+        if self._last_apply_time > 0.0 and (now - self._last_apply_time) < debounce_seconds:
             if logger.isEnabledFor(logging.DEBUG):
                 logger.debug(
                     "%s: duplicate reconfig notification within %.1fs — skip apply_all_settings",
