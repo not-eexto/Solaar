@@ -155,6 +155,8 @@ def _process_dj_notification(device: Device, notification: HIDPPNotification):
         if logger.isEnabledFor(logging.INFO):
             logger.info("%s: DJ connection: %s %s", device, connected, notification)
         device.changed(active=connected, alert=Alert.NONE, reason=_("connected") if connected else _("disconnected"))
+        if connected and hasattr(device, "apply_settings_if_needed"):
+            device.apply_settings_if_needed()
         return True
 
     logger.warning("%s: unrecognized DJ %s", device, notification)
